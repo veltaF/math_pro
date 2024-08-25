@@ -1,0 +1,26 @@
+name: Windows Build and Run
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure CMake for Visual Studio 2019
+      run: cmake -G "Visual Studio 16 2019" -A x64 .
+
+    - name: Build project
+      run: cmake --build . --config Release
+
+    - name: Test Executable
+      run: .\MathClient\Release\MathClient.exe
+
+    - name: Upload Executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: MathClient-exe
+        path: .\MathClient\Release\MathClient.exe
